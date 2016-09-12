@@ -166,6 +166,15 @@ int main(int argc, const char * argv[]) {
     }
     
     printf("Result is right and your GPU is working\n");
+
+    
+    ckE(clReleaseMemObject(memA), __LINE__);
+    ckE(clReleaseMemObject(memB),__LINE__);
+    ckE(clReleaseKernel(simpleKernel), __LINE__);
+    ckE(clReleaseCommandQueue(cmdQueueA), __LINE__);
+    ckE(clReleaseProgram(program), __LINE__);
+    ckE(clReleaseContext(context), __LINE__);
+    ckE(clReleaseDevice(this_device), __LINE__);
     
     
     return 0;
