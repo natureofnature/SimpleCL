@@ -35,8 +35,8 @@ void PrintFullPath(char * partialPath)
 #endif
 
 /* cut work group or not*/
-#define CUTWORKGROUP 100
-
+#define CUTWORKGROUP 1
+int cutsize=-1;
 
 /*check error*/
 void ckE(int status,int line){
@@ -92,7 +92,7 @@ int main(int argc, const char * argv[]) {
     printf("Current work path is \n");
     PrintFullPath(".\\");
 #endif
-    if(argc==5){
+    if(argc==7){
         if(!strcmp(argv[1],"-P")){
             chosenPlatform=atoi(argv[2]);
         }else{
@@ -102,6 +102,11 @@ int main(int argc, const char * argv[]) {
             chosenDevice=atoi(argv[4]);
         }else{
             printf("args not set, value is default for devices\n");
+        }
+        if(!strcmp(argv[5],"-C")){
+            cutsize = atoi(argv[6]);
+        }else{
+            printf("args not set, cutting size =1\n");
         }
     }else{
         printf("args not in proper form, using default value\n");
@@ -174,7 +179,7 @@ int main(int argc, const char * argv[]) {
     gettimeofday(&start_time, NULL);
     
 #ifdef CUTWORKGROUP
-    int iteration=CUTWORKGROUP;
+    int iteration=CUTWORKGROUP>cutsize?CUTWORKGROUP:cutsize;
     size_t offset[1]={0};
     size_t globalsize[1]={(size_t)numThread/iteration};
     size_t localsize[1]={64};
