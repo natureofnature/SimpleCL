@@ -5,6 +5,9 @@
 //  Created by NATURE on 11/9/2016.
 //  Copyright © 2016 NATURE. All rights reserved.
 //
+#ifdef __linux__
+#include <string.h>
+#endif
 #ifdef _WIN32
 #define _CRT_SECURE_NO_WARNINGS
 #endif
