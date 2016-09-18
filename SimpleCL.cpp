@@ -121,7 +121,16 @@ int main(int argc, const char * argv[]) {
     cl_program program=clCreateProgramWithSource(context, 1, &programSource, NULL, &status);
     ckE(status, __LINE__);
     status = clBuildProgram(program, 1, &this_device, NULL, NULL, &status);
-    ckE(status, __LINE__);
+    if(status!=CL_SUCCESS){
+        size_t size;
+        status=clGetProgramBuildInfo(program, this_device, CL_PROGRAM_BUILD_LOG, 0, NULL, &size);
+        ckE(status, __LINE__);
+        char* info=new char[size+1];
+        status=clGetProgramBuildInfo(program, this_device, CL_PROGRAM_BUILD_LOG, size, info, NULL);
+        printf("build program info %s\n",info);
+        delete info;
+        exit(0);
+    }
     
     cl_command_queue cmdQueueA=clCreateCommandQueue(context, this_device, CL_QUEUE_PROFILING_ENABLE, &status);
     ckE(status, __LINE__);

@@ -149,10 +149,10 @@ int main(int argc, const char * argv[]) {
     status = clBuildProgram(program, 1, &this_device, NULL, NULL, &status);
     if(status!=CL_SUCCESS){
         size_t size;
-        status=clGetProgramInfo(program, CL_PROGRAM_BUILD_LOG, 0, NULL, &size);
+        status=clGetProgramBuildInfo(program, this_device, CL_PROGRAM_BUILD_LOG, 0, NULL, &size);
         ckE(status, __LINE__);
         char* info=new char[size+1];
-        status=clGetProgramInfo(program, CL_PROGRAM_BUILD_LOG, size, info, NULL);
+        status=clGetProgramBuildInfo(program, this_device, CL_PROGRAM_BUILD_LOG, size, info, NULL);
         printf("build program info %s\n",info);
         delete info;
         exit(0);
