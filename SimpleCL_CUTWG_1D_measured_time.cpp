@@ -86,7 +86,7 @@ int chosenDevice=0;
 
 int main(int argc, const char * argv[]) {
     
-#ifdef  USINGFUNCTIONTIMEOFDAY
+#ifdef USINGFUNCTIONTIMEOFDAY
     timeval start_time;
     timeval end_time;
 #endif
@@ -187,9 +187,9 @@ int main(int argc, const char * argv[]) {
     ckE(status, __LINE__);
     status = clSetKernelArg(simpleKernel, 2, sizeof(cl_uint), &numThread);
     ckE(status, __LINE__);
-    
+#ifdef USINGFUNCTIONTIMEOFDAY
     gettimeofday(&start_time, NULL);
-    
+#endif  
 #ifdef CUTWORKGROUP
     int iteration=CUTWORKGROUP>cutsize?CUTWORKGROUP:cutsize;
     size_t offset[1]={0};
@@ -211,10 +211,11 @@ int main(int argc, const char * argv[]) {
     
     status = clEnqueueReadBuffer(cmdQueueA, memB, CL_TRUE, 0, numThread*sizeof(cl_float), B, 0, NULL, NULL);
     ckE(status, __LINE__);
+#ifdef USINGFUNCTIONTIMEOFDAY
     gettimeofday(&end_time,NULL);
     cl_ulong duration = (end_time.tv_sec-start_time.tv_sec)*1000000+(end_time.tv_usec-start_time.tv_usec);
     printf("duration = %llu\n",duration);
-    
+#endif
     
     for(int i=0;i<numThread;i++){
         if((B[i]-A[i])!=1.0f){
