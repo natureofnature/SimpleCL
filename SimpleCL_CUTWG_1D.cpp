@@ -118,7 +118,7 @@ int main(int argc, const char * argv[]) {
     context=clCreateContext(NULL, 1, &this_device, NULL, NULL, &status);
     ckE(status, __LINE__);
     const char* programSource = readFile((char*)"Kernel1.cl");
-    cl_program program=clCreateProgramWithSource(context, 1, &programSource, NULL, &status);
+    cl_program program=clCreateProgramWithSource(context, 1, &programSource, NULL, NULL);
     ckE(status, __LINE__);
     status = clBuildProgram(program, 1, &this_device, NULL, NULL, &status);
     if(status!=CL_SUCCESS){

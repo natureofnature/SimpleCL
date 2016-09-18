@@ -120,7 +120,7 @@ int main(int argc, const char * argv[]) {
     const char* programSource = readFile((char*)"Kernel1.cl");
     cl_program program=clCreateProgramWithSource(context, 1, &programSource, NULL, &status);
     ckE(status, __LINE__);
-    status = clBuildProgram(program, 1, &this_device, NULL, NULL, &status);
+    status = clBuildProgram(program, 1, &this_device, NULL, NULL, NULL);
     if(status!=CL_SUCCESS){
         size_t size;
         status=clGetProgramBuildInfo(program, this_device, CL_PROGRAM_BUILD_LOG, 0, NULL, &size);
