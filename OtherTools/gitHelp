@@ -1,1 +1,6 @@
 git remote add master https://github.com/natureofnature/SimpleCL.git
+
+
+git rm -r --cached .
+git add .
+git commit -m "fixed untracked files"
