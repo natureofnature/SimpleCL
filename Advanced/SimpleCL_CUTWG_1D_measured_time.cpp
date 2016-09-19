@@ -167,7 +167,7 @@ int main(int argc, const char * argv[]) {
     
     
     /*data & buffer*/
-    int numThread=102400;
+    int numThread=40960;
     float* A=new float[numThread];
     float* B=new float[numThread];
     iniArray(numThread, A);
