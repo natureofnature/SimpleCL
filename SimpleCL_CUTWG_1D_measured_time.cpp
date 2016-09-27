@@ -171,6 +171,7 @@ int main(int argc, const char * argv[]) {
     float* A=new float[numThread];
     float* B=new float[numThread];
     iniArray(numThread, A);
+    for(int i=0;i<numThread;i++)B[i]=0;
     cl_mem memA=clCreateBuffer(context, CL_MEM_READ_ONLY, numThread*sizeof(cl_float), NULL, &status);
     ckE(status, __LINE__);
     cl_mem memB=clCreateBuffer(context,CL_MEM_WRITE_ONLY,numThread*sizeof(cl_float),NULL,&status);
@@ -181,8 +182,12 @@ int main(int argc, const char * argv[]) {
     ckE(status, __LINE__);
     
     
+    status=clEnqueueWriteBuffer(cmdQueueA, memB, CL_FALSE, 0, numThread*sizeof(cl_float), B, 0, NULL, NULL);
+    ckE(status, __LINE__);
+
     status=clSetKernelArg(simpleKernel, 0, sizeof(cl_mem), &memA);
     ckE(status, __LINE__);
+
     status = clSetKernelArg(simpleKernel, 1, sizeof(cl_mem), &memB);
     ckE(status, __LINE__);
     status = clSetKernelArg(simpleKernel, 2, sizeof(cl_uint), &numThread);

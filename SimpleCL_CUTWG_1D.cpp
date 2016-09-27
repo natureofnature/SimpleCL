@@ -120,7 +120,7 @@ int main(int argc, const char * argv[]) {
     const char* programSource = readFile((char*)"Kernel1.cl");
     cl_program program=clCreateProgramWithSource(context, 1, &programSource, NULL, NULL);
     ckE(status, __LINE__);
-    status = clBuildProgram(program, 1, &this_device, NULL, NULL, &status);
+    status = clBuildProgram(program, 1, &this_device, NULL, NULL, NULL);
     if(status!=CL_SUCCESS){
         size_t size;
         status=clGetProgramBuildInfo(program, this_device, CL_PROGRAM_BUILD_LOG, 0, NULL, &size);
@@ -145,6 +145,7 @@ int main(int argc, const char * argv[]) {
     float* A=new float[numThread];
     float* B=new float[numThread];
     iniArray(numThread, A);
+    for(int i=0;i<numThread;i++)B[i]=0;
     cl_mem memA=clCreateBuffer(context, CL_MEM_READ_ONLY, numThread*sizeof(cl_float), NULL, &status);
     ckE(status, __LINE__);
     cl_mem memB=clCreateBuffer(context,CL_MEM_WRITE_ONLY,numThread*sizeof(cl_float),NULL,&status);
@@ -154,7 +155,9 @@ int main(int argc, const char * argv[]) {
     status=clEnqueueWriteBuffer(cmdQueueA, memA, CL_FALSE, 0, numThread*sizeof(cl_float), A, 0, NULL, NULL);
     ckE(status, __LINE__);
     
-    
+    status=clEnqueueWriteBuffer(cmdQueueA, memB, CL_FALSE, 0, numThread*sizeof(cl_float), B, 0, NULL, NULL); 
+    ckE(status, __LINE__);
+
     status=clSetKernelArg(simpleKernel, 0, sizeof(cl_mem), &memA);
     ckE(status, __LINE__);
     status = clSetKernelArg(simpleKernel, 1, sizeof(cl_mem), &memB);
