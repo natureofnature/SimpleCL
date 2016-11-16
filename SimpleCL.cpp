@@ -65,7 +65,7 @@ void iniArray(int size, float* array){
     }
 }
 
-int chosenPlatform=0;
+int chosenPlatform=1;
 int chosenDevice=0;
 
 
